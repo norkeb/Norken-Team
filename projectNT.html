@@ -1,0 +1,1317 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>Norken Team — Проект</title>
+  <style>
+    /* ========== RESET & BASE ========== */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg-dark: #0b0d10;
+      --bg-card: #12161c;
+      --bg-elevated: #171c23;
+      --border-subtle: #252b35;
+      --text-primary: #f0f2f5;
+      --text-secondary: #9aa3b2;
+      --text-muted: #6b7688;
+      --accent: #e03a2f;
+      --accent-glow: #ff4d3d;
+      --accent-deep: #a8231a;
+      --font-main: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 22px;
+      --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    html { scroll-behavior: smooth; overflow-x: hidden; width: 100%; }
+
+    body {
+      font-family: var(--font-main);
+      background-color: var(--bg-dark);
+      color: var(--text-primary);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      width: 100%;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    a { text-decoration: none; color: inherit; transition: color var(--transition); }
+    ul { list-style: none; }
+    img { max-width: 100%; display: block; }
+
+    /* ========== SCROLLBAR ========== */
+    ::-webkit-scrollbar { width: 8px; height: 0; }
+    ::-webkit-scrollbar-track { background: var(--bg-dark); }
+    ::-webkit-scrollbar-thumb {
+      background: #2a303a;
+      border-radius: 20px;
+      border: 2px solid var(--bg-dark);
+    }
+    ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+    /* ========== HEADER ========== */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(11, 13, 16, 0.85);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .header-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 32px;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 40px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-shrink: 0;
+      transition: transform var(--transition);
+      z-index: 1100;
+    }
+    .logo:hover { transform: scale(1.02); }
+
+    .logo-img {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--accent);
+      box-shadow: 0 0 20px rgba(224, 58, 47, 0.4);
+      background: var(--bg-card);
+    }
+
+    .logo-text { display: flex; flex-direction: column; line-height: 1.1; }
+
+    .logo-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, #fff 30%, var(--accent-glow) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .logo-sub {
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.35em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .nav-link {
+      position: relative;
+      padding: 10px 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      border-radius: var(--radius-sm);
+      transition: all var(--transition);
+      white-space: nowrap;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 4px;
+      left: 50%;
+      transform: translateX(-50%) scaleX(0);
+      width: 60%;
+      height: 2px;
+      background: var(--accent);
+      transition: transform var(--transition);
+      border-radius: 2px;
+    }
+
+    .nav-link:hover { color: var(--text-primary); background: rgba(224, 58, 47, 0.08); }
+    .nav-link:hover::after { transform: translateX(-50%) scaleX(1); }
+
+    .nav-link.active {
+      color: var(--text-primary);
+      background: rgba(224, 58, 47, 0.12);
+    }
+    .nav-link.active::after { transform: translateX(-50%) scaleX(1); }
+
+    .nav-cta {
+      margin-left: 16px;
+      padding: 10px 26px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-deep));
+      color: #fff !important;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 4px 18px rgba(224, 58, 47, 0.35);
+      transition: all var(--transition);
+    }
+
+    .nav-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(224, 58, 47, 0.55);
+      background: linear-gradient(135deg, var(--accent-glow), var(--accent));
+    }
+
+    .burger {
+      display: none;
+      flex-direction: column;
+      gap: 6px;
+      cursor: pointer;
+      padding: 6px;
+      background: none;
+      border: none;
+      z-index: 1100;
+    }
+
+    .burger span {
+      display: block;
+      width: 28px;
+      height: 3px;
+      background: var(--text-primary);
+      border-radius: 3px;
+      transition: all var(--transition);
+      transform-origin: center;
+    }
+
+    .burger.active span:nth-child(1) { transform: translateY(9px) rotate(45deg); }
+    .burger.active span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .burger.active span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
+
+    /* ========== PROJECT PAGE ========== */
+    .project-wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 60px 32px 100px;
+      width: 100%;
+      flex: 1;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      margin-bottom: 40px;
+      transition: all var(--transition);
+    }
+
+    .back-link:hover { color: var(--accent-glow); }
+    .back-link .arrow { transition: transform var(--transition); }
+    .back-link:hover .arrow { transform: translateX(-4px); }
+
+    /* --- Hero проекта --- */
+    .project-hero {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 50px;
+      align-items: flex-start;
+      padding-bottom: 50px;
+      border-bottom: 1px solid var(--border-subtle);
+      margin-bottom: 50px;
+      animation: fadeUp 0.7s ease both;
+    }
+
+    .project-logo-wrap {
+      position: relative;
+      width: 200px;
+      height: 200px;
+      border-radius: 26px;
+      background: linear-gradient(135deg, var(--bg-elevated), var(--bg-card));
+      border: 1px solid rgba(224, 58, 47, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px;
+      box-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.5),
+        0 0 40px rgba(224, 58, 47, 0.12);
+      transition: all var(--transition);
+    }
+
+    .project-logo-wrap::before {
+      content: '';
+      position: absolute;
+      inset: -10px;
+      border-radius: 32px;
+      background: radial-gradient(circle, rgba(224, 58, 47, 0.15), transparent 70%);
+      z-index: -1;
+      filter: blur(20px);
+    }
+
+    .project-logo-wrap:hover {
+      transform: translateY(-4px) rotate(-2deg);
+      box-shadow:
+        0 25px 60px rgba(0, 0, 0, 0.6),
+        0 0 60px rgba(224, 58, 47, 0.25);
+    }
+
+    .project-logo-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 16px;
+    }
+
+    .project-logo-fallback {
+      font-size: 6rem;
+      line-height: 1;
+    }
+
+    /* --- Инфо проекта --- */
+    .project-info { padding-top: 10px; }
+
+    .project-index {
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.3em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .project-index::before {
+      content: '';
+      width: 32px;
+      height: 2px;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+
+    .project-tag-pill {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent-glow);
+      background: rgba(224, 58, 47, 0.1);
+      border: 1px solid rgba(224, 58, 47, 0.3);
+      border-radius: 50px;
+      padding: 6px 16px;
+      margin-bottom: 20px;
+    }
+
+    .project-title {
+      font-size: clamp(2rem, 4.5vw, 3.2rem);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: 20px;
+      color: var(--text-primary);
+    }
+
+    .project-short-desc {
+      font-size: clamp(1rem, 1.4vw, 1.15rem);
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 32px;
+      max-width: 620px;
+    }
+
+    /* --- Кнопки --- */
+    .project-actions {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 28px;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      transition: all var(--transition);
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-deep));
+      color: #fff;
+      box-shadow: 0 8px 24px rgba(224, 58, 47, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 14px 36px rgba(224, 58, 47, 0.6);
+      background: linear-gradient(135deg, var(--accent-glow), var(--accent));
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text-primary);
+      border: 2px solid var(--border-subtle);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--accent);
+      background: rgba(224, 58, 47, 0.08);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(224, 58, 47, 0.15);
+    }
+
+    /* --- Секции --- */
+    .project-section {
+      margin-bottom: 56px;
+      animation: fadeUp 0.7s 0.1s ease both;
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-label::before {
+      content: '';
+      width: 24px;
+      height: 2px;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+
+    .project-section h2 {
+      font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      margin-bottom: 20px;
+      line-height: 1.25;
+    }
+
+    .project-section p {
+      font-size: 1rem;
+      color: var(--text-secondary);
+      line-height: 1.8;
+      margin-bottom: 16px;
+      max-width: 780px;
+    }
+
+    .project-section p strong {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    /* --- Фичи --- */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin-top: 20px;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 18px 20px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      transition: all var(--transition);
+    }
+
+    .feature-item:hover {
+      border-color: rgba(224, 58, 47, 0.4);
+      background: rgba(224, 58, 47, 0.04);
+      transform: translateY(-3px);
+    }
+
+    .feature-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 9px;
+      background: linear-gradient(135deg, rgba(224, 58, 47, 0.18), rgba(224, 58, 47, 0.05));
+      border: 1px solid rgba(224, 58, 47, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+
+    .feature-text {
+      font-size: 0.92rem;
+      color: var(--text-secondary);
+      line-height: 1.55;
+      padding-top: 4px;
+    }
+
+    .feature-text strong {
+      color: var(--text-primary);
+      font-weight: 700;
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    /* --- Статистика проекта --- */
+    .project-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 20px;
+    }
+
+    .project-stat {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 22px 20px;
+      text-align: center;
+      transition: all var(--transition);
+    }
+
+    .project-stat:hover {
+      border-color: rgba(224, 58, 47, 0.4);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    .project-stat-num {
+      font-size: 1.9rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, #fff, var(--accent-glow));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.2;
+      margin-bottom: 4px;
+    }
+
+    .project-stat-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    /* --- CTA блок --- */
+    .project-cta {
+      position: relative;
+      background: linear-gradient(135deg, var(--bg-elevated), var(--bg-card));
+      border: 1px solid rgba(224, 58, 47, 0.3);
+      border-radius: var(--radius-lg);
+      padding: 44px 40px;
+      text-align: center;
+      overflow: hidden;
+      margin-top: 20px;
+    }
+
+    .project-cta::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(224, 58, 47, 0.15), transparent 65%);
+      pointer-events: none;
+    }
+
+    .project-cta > * { position: relative; z-index: 1; }
+
+    .project-cta-title {
+      font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+      font-weight: 900;
+      letter-spacing: -0.01em;
+      margin-bottom: 12px;
+      line-height: 1.2;
+    }
+
+    .project-cta-desc {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      max-width: 480px;
+      margin: 0 auto 26px;
+    }
+
+    .project-cta-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* --- Другие проекты --- */
+    .other-projects {
+      margin-top: 70px;
+      padding-top: 50px;
+      border-top: 1px solid var(--border-subtle);
+      animation: fadeUp 0.7s 0.2s ease both;
+    }
+
+    .other-title {
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .other-title::before {
+      content: '';
+      width: 28px;
+      height: 2px;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+
+    .other-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .other-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 20px 18px;
+      transition: all var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .other-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-glow));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s ease;
+    }
+
+    .other-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(224, 58, 47, 0.4);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    .other-card:hover::before { transform: scaleX(1); }
+
+    .other-card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, rgba(224, 58, 47, 0.18), rgba(224, 58, 47, 0.05));
+      border: 1px solid rgba(224, 58, 47, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+
+    .other-card-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      padding: 4px;
+    }
+
+    .other-card-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .other-card-name {
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: 2px;
+      line-height: 1.3;
+    }
+
+    .other-card-tag {
+      font-size: 0.68rem;
+      color: var(--accent-glow);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    /* --- Состояния --- */
+    .project-state {
+      text-align: center;
+      padding: 100px 20px;
+      color: var(--text-muted);
+    }
+
+    .project-state .icon {
+      font-size: 4rem;
+      margin-bottom: 20px;
+      opacity: 0.4;
+    }
+
+    .project-state .title {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--text-secondary);
+      margin-bottom: 10px;
+    }
+
+    .project-state .text {
+      font-size: 0.92rem;
+      margin-bottom: 26px;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* ========== FOOTER ========== */
+    .footer {
+      border-top: 1px solid var(--border-subtle);
+      background: var(--bg-card);
+      padding: 40px 32px 28px;
+      margin-top: auto;
+    }
+
+    .footer-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .footer-logo img {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1.5px solid var(--accent);
+      object-fit: cover;
+    }
+
+    .footer-logo span {
+      font-weight: 800;
+      font-size: 1rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .footer-nav {
+      display: flex;
+      gap: 28px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .footer-nav a {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      letter-spacing: 0.04em;
+    }
+
+    .footer-nav a:hover { color: var(--accent-glow); }
+
+    .footer-copy {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      text-align: center;
+      opacity: 0.7;
+    }
+
+    /* ========== ANIMATIONS ========== */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    /* ========== RESPONSIVE ========== */
+    @media (max-width: 900px) {
+      .header-inner { padding: 0 20px; height: 68px; }
+      .burger { display: flex; }
+
+      .nav {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: min(320px, 82vw);
+        max-width: 82vw;
+        height: 100vh;
+        height: 100dvh;
+        background: var(--bg-elevated);
+        border-left: 1px solid var(--border-subtle);
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: flex-start;
+        padding: 92px 24px 40px;
+        gap: 6px;
+        transition: right 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: -20px 0 60px rgba(0, 0, 0, 0.6);
+        overflow-y: auto;
+        z-index: 1050;
+      }
+
+      .nav.open { right: 0; }
+      .nav-link { padding: 16px 18px; font-size: 1rem; border-radius: var(--radius-sm); }
+      .nav-link::after { display: none; }
+
+      .nav-cta {
+        margin-left: 0;
+        margin-top: 18px;
+        text-align: center;
+        justify-content: center;
+        padding: 16px 26px;
+      }
+
+      .project-wrap { padding: 40px 20px 70px; }
+
+      .project-hero {
+        grid-template-columns: 1fr;
+        gap: 30px;
+        text-align: center;
+      }
+
+      .project-logo-wrap {
+        width: 160px;
+        height: 160px;
+        margin: 0 auto;
+      }
+
+      .project-logo-wrap img { border-radius: 12px; }
+
+      .project-index { justify-content: center; }
+      .project-index::before { display: none; }
+
+      .project-short-desc { margin-left: auto; margin-right: auto; }
+      .project-actions { justify-content: center; }
+
+      .features-grid { grid-template-columns: 1fr; }
+      .project-stats { grid-template-columns: 1fr; }
+      .project-cta { padding: 32px 24px; }
+
+      .other-grid { grid-template-columns: 1fr; }
+
+      .footer { padding: 32px 20px 24px; }
+    }
+
+    @media (max-width: 520px) {
+      .header-inner { padding: 0 16px; height: 64px; }
+      .logo-img { width: 40px; height: 40px; }
+      .logo-title { font-size: 1.05rem; }
+      .logo-sub { font-size: 0.5rem; letter-spacing: 0.28em; }
+
+      .project-wrap { padding: 32px 16px 60px; }
+
+      .project-logo-wrap {
+        width: 130px;
+        height: 130px;
+        border-radius: 20px;
+      }
+
+      .project-logo-fallback { font-size: 4rem; }
+
+      .project-title { font-size: 1.7rem; }
+      .project-short-desc { font-size: 0.95rem; }
+
+      .project-actions { flex-direction: column; width: 100%; }
+      .btn { width: 100%; justify-content: center; }
+
+      .features-grid { gap: 10px; }
+      .feature-item { padding: 14px 16px; }
+      .feature-icon { width: 32px; height: 32px; font-size: 0.9rem; }
+
+      .project-cta { padding: 28px 20px; }
+      .project-cta-actions { flex-direction: column; }
+      .project-cta-actions .btn { width: 100%; }
+
+      .other-card { padding: 16px 14px; }
+      .other-card-icon { width: 42px; height: 42px; }
+
+      .footer { padding: 28px 16px 22px; }
+      .footer-nav { gap: 14px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ================= HEADER ================= -->
+  <header class="header">
+    <div class="header-inner">
+
+      <a href="index.html" class="logo" aria-label="Norken Team — на главную">
+        <img src="ntlogo.png" alt="Norken Team Logo" class="logo-img" />
+        <div class="logo-text">
+          <span class="logo-title">Norken</span>
+          <span class="logo-sub">Team</span>
+        </div>
+      </a>
+
+      <button class="burger" id="burger" aria-label="Меню" aria-expanded="false" aria-controls="nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <nav class="nav" id="nav">
+        <a href="index.html" class="nav-link">Главная</a>
+        <a href="news.html" class="nav-link">Новости</a>
+        <a href="projects.html" class="nav-link active">Проекты</a>
+        <a href="about.html" class="nav-link">О нас</a>
+        <a href="policy.html" class="nav-link">Политика</a>
+        <a href="contact.html" class="nav-cta">Связаться</a>
+      </nav>
+
+    </div>
+  </header>
+
+  <!-- ================= MAIN ================= -->
+  <main>
+    <article class="project-wrap" id="projectWrap">
+      <a href="projects.html" class="back-link">
+        <span class="arrow">←</span> Все проекты
+      </a>
+
+      <div id="projectRoot">
+        <div class="project-state">
+          <div class="icon">⏳</div>
+          <div class="title">Загружаем проект...</div>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="footer">
+    <div class="footer-inner">
+
+      <div class="footer-logo">
+        <img src="ntlogo.png" alt="Norken Team" />
+        <span>Norken Team</span>
+      </div>
+
+      <nav class="footer-nav">
+        <a href="index.html">Главная</a>
+        <a href="news.html">Новости</a>
+        <a href="projects.html">Проекты</a>
+        <a href="about.html">О нас</a>
+        <a href="policy.html">Политика</a>
+      </nav>
+
+      <div class="footer-copy">
+        ©NorkenTeam2026🍁
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- ================= SCRIPT ================= -->
+  <script>
+    // ===== Меню =====
+    (function () {
+      const burger = document.getElementById('burger');
+      const nav = document.getElementById('nav');
+      if (!burger || !nav) return;
+
+      function openMenu() {
+        nav.classList.add('open');
+        burger.classList.add('active');
+        burger.setAttribute('aria-expanded', 'true');
+        document.body.style.overflow = 'hidden';
+      }
+      function closeMenu() {
+        nav.classList.remove('open');
+        burger.classList.remove('active');
+        burger.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = '';
+      }
+      function toggleMenu(e) {
+        e.preventDefault(); e.stopPropagation();
+        nav.classList.contains('open') ? closeMenu() : openMenu();
+      }
+
+      burger.addEventListener('click', toggleMenu);
+      nav.querySelectorAll('a').forEach(l => l.addEventListener('click', () => {
+        if (window.innerWidth <= 900) closeMenu();
+      }));
+      document.addEventListener('click', e => {
+        if (window.innerWidth > 900) return;
+        if (!nav.classList.contains('open')) return;
+        if (nav.contains(e.target) || burger.contains(e.target)) return;
+        closeMenu();
+      });
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && nav.classList.contains('open')) closeMenu();
+      });
+      window.addEventListener('resize', () => {
+        if (window.innerWidth > 900) closeMenu();
+      });
+    })();
+
+    // ===== Данные проектов =====
+    const PROJECTS = {
+      'nt': {
+        index: '01',
+        tag: 'Основа команды',
+        name: 'Norken Team',
+        icon: '🍁',
+        logo: 'ntlogo.png',
+        shortDesc: 'Основной бренд и центральное ядро всей экосистемы. Объединяет участников, координирует направления и задаёт стандарты качества. Здесь начинается всё.',
+        about: [
+          'Norken Team — это фундамент всей экосистемы проектов. Команда, которая на протяжении нескольких лет развивает собственные направления в разработке, медиа, гейминге и исследовательской деятельности.',
+          'Здесь формируются стандарты, координируются все проекты и задаётся вектор движения. Norken Team — это не просто бренд, а структура, объединяющая более тысячи участников по всему миру.'
+        ],
+        features: [
+          { icon: '🎯', title: 'Ядро', text: 'Центральный бренд, задающий стандарты качества во всех направлениях' },
+          { icon: '👥', title: 'Комьюнити', text: 'Более 1000 участников, объединённых общей идеей и дисциплиной' },
+          { icon: '⚡', title: 'Координация', text: 'Управление всеми проектами и направлениями экосистемы' },
+          { icon: '🍁', title: 'Идентичность', text: 'Кленовый знак — символ единства, силы и движения вперёд' }
+        ],
+        stats: [
+          { num: '1000+', label: 'Участников' },
+          { num: '4', label: 'Года развития' },
+          { num: '6+', label: 'Проектов' }
+        ],
+        ctaTitle: 'Хочешь стать частью Norken Team?',
+        ctaDesc: 'Мы всегда ищем тех, кто не боится сложностей и готов работать на результат.',
+        primaryBtn: { text: '⚡ Telegram', href: 'https://t.me/norken_team' },
+        secondaryBtn: { text: '📁 Все проекты', href: 'projects.html' }
+      },
+
+      'lity': {
+        index: '02',
+        tag: 'Проект',
+        name: 'LITY',
+        icon: '◆',
+        logo: 'litylogo.png',
+        shortDesc: 'LITY — проект по исследованию заброшенных мест: карта объектов, координаты, игры и ИИ. 16+. Порядок там, где хаос.',
+        about: [
+          'LITY — исследовательский проект Norken Team, посвящённый изучению заброшенных объектов. Мы создаём систематизированную карту мест с координатами, описаниями и визуальным материалом.',
+          'Внутри LITY работает собственная экосистема: встроенные игры, ИИ-помощник для навигации и сообщество исследователей. Проект строго 16+ и придерживается принципа безопасности и уважения к объектам.'
+        ],
+        features: [
+          { icon: '🗺️', title: 'Карта объектов', text: 'Систематизированная база заброшенных мест с координатами' },
+          { icon: '📸', title: 'Медиа-материалы', text: 'Фотографии и истории с каждой локации' },
+          { icon: '🎮', title: 'Игровая часть', text: 'Встроенные игры и интерактивные механики внутри проекта' },
+          { icon: '🤖', title: 'ИИ-помощник', text: 'Умный ассистент для навигации и поиска объектов' }
+        ],
+        stats: [
+          { num: '16+', label: 'Возраст' },
+          { num: '24/7', label: 'Доступ' },
+          { num: '∞', label: 'Объектов' }
+        ],
+        ctaTitle: 'Погрузись в LITY',
+        ctaDesc: 'Порядок там, где хаос. Исследуй заброшенные места вместе с командой.',
+        primaryBtn: { text: '🔗 Открыть LITY', href: 'https://nt.vercel.app/' },
+        secondaryBtn: { text: '📁 Все проекты', href: 'projects.html' }
+      },
+
+      'walk': {
+        index: '03',
+        tag: 'Суб-проект',
+        name: 'WALK',
+        icon: '▲',
+        logo: 'walklogo.png',
+        shortDesc: 'WALK — проект Norken Team о прогулках и достопримечательностях. Открывай город заново.',
+        about: [
+          'WALK — это суб-проект Norken Team, посвящённый городским прогулкам и изучению достопримечательностей. Мы показываем город с неожиданной стороны.',
+          'Проект помогает открывать новые места, узнавать истории и находить маршруты, которые обычно остаются за кадром туристических карт.'
+        ],
+        features: [
+          { icon: '🚶', title: 'Маршруты', text: 'Авторские маршруты для прогулок по городу' },
+          { icon: '📍', title: 'Достопримечательности', text: 'Истории и факты о местах, которые вы проходите мимо' },
+          { icon: '🌆', title: 'Город заново', text: 'Открывай знакомые улицы с новой стороны' },
+          { icon: '📷', title: 'Атмосфера', text: 'Фото и впечатления с каждой прогулки' }
+        ],
+        stats: [
+          { num: '∞', label: 'Маршрутов' },
+          { num: '24/7', label: 'Доступ' },
+          { num: '1', label: 'Город и больше' }
+        ],
+        ctaTitle: 'Открой город заново',
+        ctaDesc: 'WALK — это твой проводник по знакомым улицам с новой стороны.',
+        primaryBtn: { text: '📁 Все проекты', href: 'projects.html' },
+        secondaryBtn: { text: '📢 Telegram', href: 'https://t.me/norken_team' }
+      },
+
+      'ng': {
+        index: '04',
+        tag: 'Суб-проект',
+        name: 'Norken Games',
+        icon: '🎮',
+        logo: 'nglogo.png',
+        shortDesc: 'NG — игры и приложения от Norken Team. Бесплатно, с душой и без границ.',
+        about: [
+          'Norken Games — игровое подразделение команды. Мы разрабатываем игры и приложения, которые делают с душой и без компромиссов по качеству.',
+          'Все проекты Norken Games распространяются бесплатно. Мы верим, что качественный игровой опыт должен быть доступен каждому.'
+        ],
+        features: [
+          { icon: '🎮', title: 'Игры', text: 'Собственные игровые проекты команды' },
+          { icon: '📱', title: 'Приложения', text: 'Мобильные и десктопные приложения' },
+          { icon: '💚', title: 'Бесплатно', text: 'Все проекты доступны без оплаты' },
+          { icon: '✨', title: 'С душой', text: 'Каждый проект делается с вниманием к деталям' }
+        ],
+        stats: [
+          { num: '100%', label: 'Бесплатно' },
+          { num: '∞', label: 'Идей' },
+          { num: '24/7', label: 'Доступ' }
+        ],
+        ctaTitle: 'Играй в проекты Norken Games',
+        ctaDesc: 'Бесплатные игры и приложения от команды Norken.',
+        primaryBtn: { text: '🔗 Открыть', href: 'https://nt.vercel.app/' },
+        secondaryBtn: { text: '📁 Все проекты', href: 'projects.html' }
+      },
+
+      'nf': {
+        index: '05',
+        tag: 'Медиа-контент',
+        name: 'Norken Fear',
+        icon: '☠',
+        logo: 'nf.logo',
+        shortDesc: 'NF — медиа-проект Norken Team о заброшках. Атмосфера, истории и кадры, которые говорят сами за себя.',
+        about: [
+          'Norken Fear — медиа-направление команды, посвящённое заброшенным местам. Мы создаём атмосферный контент: истории, видео, фотографии, которые передают дух каждого объекта.',
+          'Проект работает в связке с LITY: карта объектов и медиа-контент дополняют друг друга, создавая полное погружение.'
+        ],
+        features: [
+          { icon: '🎬', title: 'Видео', text: 'Атмосферные ролики с заброшенных объектов' },
+          { icon: '📸', title: 'Фото', text: 'Кадры, которые передают атмосферу места' },
+          { icon: '📖', title: 'Истории', text: 'Реальные истории и легенды заброшек' },
+          { icon: '🎧', title: 'Атмосфера', text: 'Звук, свет и настроение — всё работает на погружение' }
+        ],
+        stats: [
+          { num: '16+', label: 'Возраст' },
+          { num: '24/7', label: 'Доступ' },
+          { num: '∞', label: 'Контента' }
+        ],
+        ctaTitle: 'Погрузись в атмосферу',
+        ctaDesc: 'Norken Fear — контент, который говорит сам за себя.',
+        primaryBtn: { text: '📢 Telegram', href: 'https://t.me/norken_team' },
+        secondaryBtn: { text: '📁 Все проекты', href: 'projects.html' }
+      },
+
+      'nb': {
+        index: '06',
+        tag: 'Медиа-контент',
+        name: 'NewsBash',
+        icon: '📡',
+        logo: 'nb-logo.png',
+        shortDesc: 'NewsBash — новостной проект Norken Team. События, обновления и всё важное в одном месте.',
+        about: [
+          'NewsBash — медиа-проект команды, в котором публикуются все важные события и обновления экосистемы Norken Team.',
+          'Здесь можно узнать о запуске новых проектов, обновлениях существующих направлений и ключевых событиях команды.'
+        ],
+        features: [
+          { icon: '📰', title: 'Новости', text: 'Оперативные новости команды и проектов' },
+          { icon: '📢', title: 'Анонсы', text: 'Анонсы запусков и обновлений' },
+          { icon: '📊', title: 'Статистика', text: 'Отчёты и данные о развитии проектов' },
+          { icon: '🔔', title: 'Обновления', text: 'Всё важное в одном месте — не пропустишь' }
+        ],
+        stats: [
+          { num: '24/7', label: 'Новости' },
+          { num: '∞', label: 'Событий' },
+          { num: '1', label: 'Источник' }
+        ],
+        ctaTitle: 'Будь в курсе',
+        ctaDesc: 'NewsBash — все новости Norken Team в одном месте.',
+        primaryBtn: { text: '📢 Telegram', href: 'https://t.me/norken_team' },
+        secondaryBtn: { text: '📁 Все проекты', href: 'projects.html' }
+      }
+    };
+
+    // ===== Рендер =====
+    (function () {
+      const projectRoot = document.getElementById('projectRoot');
+      if (!projectRoot) return;
+
+      // Достаём id из URL
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get('id');
+
+      if (!id || !PROJECTS[id]) {
+        projectRoot.innerHTML = `
+          <div class="project-state">
+            <div class="icon">🔍</div>
+            <div class="title">Проект не найден</div>
+            <div class="text">Возможно, ссылка неверная или проект был удалён.</div>
+            <a href="projects.html" class="btn btn-primary">← Ко всем проектам</a>
+          </div>
+        `;
+        return;
+      }
+
+      const p = PROJECTS[id];
+
+      // Обновляем title страницы
+      document.title = p.name + ' — Norken Team';
+
+      // Обновляем мета-описание
+      const metaDesc = document.querySelector('meta[name="description"]') || (() => {
+        const m = document.createElement('meta');
+        m.setAttribute('name', 'description');
+        document.head.appendChild(m);
+        return m;
+      })();
+      metaDesc.setAttribute('content', p.shortDesc);
+
+      // Логотип — img или fallback
+      const logoHtml = p.logo
+        ? `<img src="${p.logo}" alt="${p.name}" onerror="this.style.display='none'; this.parentNode.innerHTML='<div class=&quot;project-logo-fallback&quot;>${p.icon}</div>';" />`
+        : `<div class="project-logo-fallback">${p.icon}</div>`;
+
+      // Фичи
+      const featuresHtml = p.features.map(f => `
+        <div class="feature-item">
+          <div class="feature-icon">${f.icon}</div>
+          <div class="feature-text"><strong>${f.title}</strong>${f.text}</div>
+        </div>
+      `).join('');
+
+      // Статистика
+      const statsHtml = p.stats.map(s => `
+        <div class="project-stat">
+          <div class="project-stat-num">${s.num}</div>
+          <div class="project-stat-label">${s.label}</div>
+        </div>
+      `).join('');
+
+      // Параграфы «О проекте»
+      const aboutHtml = p.about.map(par => `<p>${par}</p>`).join('');
+
+      // Другие проекты (все, кроме текущего)
+      const otherIds = Object.keys(PROJECTS).filter(k => k !== id).slice(0, 3);
+      const otherHtml = otherIds.map(k => {
+        const o = PROJECTS[k];
+        const iconHtml = o.logo
+          ? `<img src="${o.logo}" alt="${o.name}" onerror="this.style.display='none'; this.parentNode.innerHTML='${o.icon}';" />`
+          : o.icon;
+        return `
+          <a href="project.html?id=${k}" class="other-card">
+            <div class="other-card-icon">${iconHtml}</div>
+            <div class="other-card-content">
+              <div class="other-card-name">${o.name}</div>
+              <div class="other-card-tag">${o.tag}</div>
+            </div>
+          </a>
+        `;
+      }).join('');
+
+      // Рендерим всё
+      projectRoot.innerHTML = `
+        <div class="project-hero">
+          <div class="project-logo-wrap">${logoHtml}</div>
+
+          <div class="project-info">
+            <div class="project-index">${p.index}</div>
+            <div class="project-tag-pill">${p.tag}</div>
+            <h1 class="project-title">${p.name}</h1>
+            <p class="project-short-desc">${p.shortDesc}</p>
+
+            <div class="project-actions">
+              <a href="${p.primaryBtn.href}" target="_blank" rel="noopener" class="btn btn-primary">${p.primaryBtn.text}</a>
+              <a href="${p.secondaryBtn.href}" class="btn btn-outline">${p.secondaryBtn.text}</a>
+            </div>
+          </div>
+        </div>
+
+        <section class="project-section">
+          <div class="section-label">О проекте</div>
+          <h2>Что такое ${p.name}</h2>
+          ${aboutHtml}
+        </section>
+
+        <section class="project-section">
+          <div class="section-label">Возможности</div>
+          <h2>Что внутри</h2>
+          <div class="features-grid">${featuresHtml}</div>
+        </section>
+
+        <section class="project-section">
+          <div class="section-label">Статистика</div>
+          <h2>Ключевые цифры</h2>
+          <div class="project-stats">${statsHtml}</div>
+        </section>
+
+        <div class="project-cta">
+          <h2 class="project-cta-title">${p.ctaTitle}</h2>
+          <p class="project-cta-desc">${p.ctaDesc}</p>
+          <div class="project-cta-actions">
+            <a href="${p.primaryBtn.href}" target="_blank" rel="noopener" class="btn btn-primary">${p.primaryBtn.text}</a>
+            <a href="${p.secondaryBtn.href}" class="btn btn-outline">${p.secondaryBtn.text}</a>
+          </div>
+        </div>
+
+        <div class="other-projects">
+          <div class="other-title">Другие проекты</div>
+          <div class="other-grid">${otherHtml}</div>
+        </div>
+      `;
+    })();
+  </script>
+
+</body>
+</html>
